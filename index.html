@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>100 FastAPI Projects Tracker</title>
+
+<link rel="stylesheet" href="css/style.css">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body>
+
+<header class="header">
+
+<h1>🚀 100 FastAPI Projects</h1>
+
+<p>
+Interactive tracker for the
+<a href="https://github.com/nishchup489-afk/100-Python-Projects" target="_blank">
+100 Python Projects Repository
+</a>
+</p>
+
+</header>
+
+
+<section class="readme">
+
+<h2>A Structured Journey: From Fundamentals → Systems → Capstones</h2>
+
+<p>
+This repository documents a mission to build
+<strong>100 practical Python projects using FastAPI or CLI</strong>.
+</p>
+
+<p>
+The projects are structured into three layers:
+</p>
+
+<ul>
+<li><strong>60 Small / Medium Projects</strong> — core programming skills</li>
+<li><strong>13 Mega Projects</strong> — category level systems</li>
+<li><strong>3 Capstone Projects</strong> — multi-domain applications</li>
+</ul>
+
+</section>
+
+
+<section class="dashboard">
+
+<h2>📊 Progress Dashboard</h2>
+
+<div class="stats">
+
+<div class="stat">
+<h3>Total</h3>
+<p id="totalProjects">100</p>
+</div>
+
+<div class="stat">
+<h3>Completed</h3>
+<p id="completedProjects">0</p>
+</div>
+
+<div class="stat">
+<h3>Remaining</h3>
+<p id="remainingProjects">100</p>
+</div>
+
+<div class="stat">
+<h3>Completion</h3>
+<p id="completionPercent">0%</p>
+</div>
+
+</div>
+
+<div class="charts">
+
+<canvas id="progressChart"></canvas>
+<canvas id="categoryChart"></canvas>
+
+</div>
+
+</section>
+
+
+<section class="controls">
+
+<input
+type="text"
+id="search"
+placeholder="Search projects..."
+>
+
+<select id="categoryFilter">
+
+<option value="all">All Categories</option>
+<option value="numbers">Numbers</option>
+<option value="algorithms">Algorithms</option>
+<option value="graph">Graph Theory</option>
+<option value="data">Data Structures</option>
+<option value="text">Text Processing</option>
+<option value="network">Networking</option>
+<option value="oop">OOP Systems</option>
+<option value="concurrency">Concurrency</option>
+<option value="web">Web Applications</option>
+<option value="files">File Systems</option>
+<option value="database">Databases</option>
+<option value="media">Graphics</option>
+<option value="security">Security</option>
+<option value="capstone">Capstone</option>
+
+</select>
+
+</section>
+
+
+<main id="projectsContainer">
+
+<!-- JS will inject all 100 projects here -->
+
+</main>
+
+
+
+<template id="projectCardTemplate">
+
+<div class="projectCard">
+
+<div class="projectHeader">
+
+<h3 class="projectTitle"></h3>
+
+<span class="status"></span>
+
+</div>
+
+<p class="projectDescription"></p>
+
+<div class="repoSection">
+
+<input
+class="githubInput"
+placeholder="GitHub repo URL (required)"
+>
+
+<input
+class="liveInput"
+placeholder="Live preview URL (optional)"
+>
+
+<button class="saveBtn">+</button>
+
+</div>
+
+
+<div class="stars">
+
+<span data-star="1">⭐</span>
+<span data-star="2">⭐</span>
+<span data-star="3">⭐</span>
+<span data-star="4">⭐</span>
+<span data-star="5">⭐</span>
+
+</div>
+
+
+<textarea
+class="notes"
+placeholder="What should you remember from this project?"
+></textarea>
+
+</div>
+
+</template>
+
+
+
+<footer>
+
+<p>
+Project Tracker for the
+<a href="https://github.com/nishchup489-afk/100-Python-Projects" target="_blank">
+100 Python Projects
+</a>
+</p>
+
+</footer>
+
+
+<script src="js/projects.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/charts.js"></script>
+<script src="js/script.js"></script>
+
+</body>
+
+</html>
