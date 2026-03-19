@@ -2,202 +2,604 @@
 <html lang="en">
 
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 100 FastAPI Projects Tracker</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    animation: {
+                        'gradient': 'gradient 8s linear infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                    },
+                    keyframes: {
+                        gradient: {
+                            '0%, 100%': { backgroundPosition: '0% 50%' },
+                            '50%': { backgroundPosition: '100% 50%' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        glow: {
+                            'from': { boxShadow: '0 0 20px rgba(59, 130, 246, 0.5)' },
+                            'to': { boxShadow: '0 0 30px rgba(59, 130, 246, 0.8)' },
+                        }
+                    }
+                },
+            },
+        }
+    </script>
 
-<title>100 FastAPI Projects Tracker</title>
+    <style>
 
-<link rel="stylesheet" href="css/style.css">
+        :root {
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            --accent: #3b82f6;
 
+            --accent-purple: #8b5cf6;
+
+        }
+
+
+
+        body {
+
+            background: #050508;
+
+            background-image: 
+
+                radial-gradient(circle at 0% 0%, rgba(59, 130, 246, 0.12) 0%, transparent 35%),
+
+                radial-gradient(circle at 100% 100%, rgba(139, 92, 246, 0.08) 0%, transparent 35%);
+
+            background-attachment: fixed;
+
+            min-height: 100vh;
+
+            color: #f8fafc;
+
+        }
+
+
+
+        /* Glassmorphism Refinement */
+
+        .glass-card {
+
+            background: rgba(255, 255, 255, 0.03);
+
+            backdrop-filter: blur(16px) saturate(180%);
+
+            border: 1px solid rgba(255, 255, 255, 0.08);
+
+            box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5);
+
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+
+        }
+
+
+
+        .glass-card:hover {
+
+            background: rgba(255, 255, 255, 0.05);
+
+            border-color: rgba(59, 130, 246, 0.3);
+
+            transform: translateY(-4px);
+
+        }
+
+
+
+        /* Project Card Animation */
+
+        .project-card-wrapper {
+
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+
+        }
+
+
+
+        .project-card-wrapper:hover {
+
+            transform: translateY(-8px) scale(1.01);
+
+        }
+
+
+
+        .project-card-number {
+
+            background: linear-gradient(135deg, var(--accent), var(--accent-purple));
+
+            border: 2px solid rgba(255, 255, 255, 0.1);
+
+            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.4);
+
+            z-index: 20;
+
+        }
+
+
+
+        /* Typography */
+
+        .gradient-text {
+
+            background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 50%, #f472b6 100%);
+
+            -webkit-background-clip: text;
+
+            -webkit-text-fill-color: transparent;
+
+            font-weight: 900;
+
+            letter-spacing: -0.04em;
+
+        }
+
+
+
+        /* Enhanced Form Elements */
+
+        input, textarea {
+
+            background: rgba(0, 0, 0, 0.4) !important;
+
+            border: 1px solid rgba(255, 255, 255, 0.08) !important;
+
+            color: #fff !important;
+
+            border-radius: 14px !important;
+
+            transition: all 0.3s ease !important;
+
+            font-size: 14px !important;
+
+        }
+
+
+
+        input:focus, textarea:focus {
+
+            border-color: var(--accent) !important;
+
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.15) !important;
+
+            background: rgba(59, 130, 246, 0.05) !important;
+
+            outline: none;
+
+        }
+
+
+
+        /* Scrollbar */
+
+        ::-webkit-scrollbar { width: 6px; }
+
+        ::-webkit-scrollbar-track { background: transparent; }
+
+        ::-webkit-scrollbar-thumb {
+
+            background: linear-gradient(transparent, var(--accent), transparent);
+
+            border-radius: 10px;
+
+        }
+
+
+
+        /* Buttons */
+
+        .btn-gradient {
+
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-purple) 100%);
+
+            transition: all 0.3s ease;
+
+        }
+
+        
+
+        .btn-gradient:hover {
+
+            box-shadow: 0 0 25px rgba(59, 130, 246, 0.5);
+
+            transform: scale(1.02);
+
+        }
+
+
+
+        .save-btn {
+
+            background: rgba(255, 255, 255, 0.05);
+
+            border: 1px solid rgba(255, 255, 255, 0.1);
+
+            text-transform: uppercase;
+
+            font-size: 11px;
+
+            letter-spacing: 0.1em;
+
+            font-weight: 800;
+
+            transition: all 0.3s ease;
+
+        }
+
+
+
+        .save-btn:hover {
+
+            background: #fff;
+
+            color: #000;
+
+            border-color: #fff;
+
+            transform: translateY(-2px);
+
+        }
+
+
+
+        .filter-btn.active {
+
+            background: #fff !important;
+
+            color: #000 !important;
+
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+
+        }
+
+
+
+        /* Status colors */
+
+        .status.completed { background: linear-gradient(135deg, #10b981, #059669); color: white; }
+
+        .status.in-progress { background: linear-gradient(135deg, #f59e0b, #d97706); color: white; }
+
+        .status.not-started { background: rgba(255, 255, 255, 0.05); color: #94a3b8; }
+
+
+
+        /* Animations */
+
+        .reveal {
+
+            opacity: 0;
+
+            transform: translateY(20px);
+
+            animation: revealIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+
+        }
+
+
+
+        @keyframes revealIn {
+
+            to { opacity: 1; transform: translateY(0); }
+
+        }
+
+    </style>
 </head>
 
-<body>
+<body class="font-sans text-white">
 
-<header class="header">
+    <!-- Header with glassmorphism -->
+  <header class="glass-card sticky top-0 z-50 border-b border-white/[0.08] backdrop-blur-2xl">
+    <div class="container mx-auto px-6 py-5">
+        <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+            
+            <div class="reveal text-center md:text-left">
+                <div class="flex items-center justify-center md:justify-start gap-3 mb-1">
+                    <span class="text-2xl animate-float">🚀</span>
+                    <h1 class="text-3xl font-black gradient-text tracking-tighter">
+                        100 FastAPI Projects
+                    </h1>
+                </div>
+                <p class="text-[10px] uppercase tracking-[0.3em] font-bold text-gray-500">
+                    Interactive Roadmap for 
+                    <a href="https://github.com/nishchup489-afk/100-Python-Projects" target="_blank"
+                        class="text-blue-400/80 hover:text-blue-400 transition-colors duration-300">
+                        @nishchup489-afk
+                    </a>
+                </p>
+            </div>
 
-<h1>🚀 100 FastAPI Projects</h1>
+            <nav class="flex items-center gap-2 p-1.5 glass-card rounded-2xl bg-white/[0.02]">
+                <a href="demo_projects.html"
+                    class="px-5 py-2.5 rounded-xl text-xs font-bold uppercase tracking-widest hover:bg-white/[0.05] hover:text-blue-400 transition-all duration-300">
+                    Projects
+                </a>
+                <a href="discipline.html"
+                    class="px-5 py-2.5 rounded-xl text-xs font-bold uppercase tracking-widest hover:bg-white/[0.05] hover:text-purple-400 transition-all duration-300">
+                    Discipline
+                </a>
+                <div class="w-px h-4 bg-white/10 mx-2"></div>
+                <button id="theme-toggle" 
+                    class="p-2.5 btn-gradient rounded-xl shadow-[0_0_20px_rgba(59,130,246,0.3)] hover:shadow-[0_0_30px_rgba(59,130,246,0.5)] transition-all duration-500">
+                    <span class="text-sm">🌓</span>
+                </button>
+            </nav>
 
-<p>
-Interactive tracker for the
-<a href="https://github.com/nishchup489-afk/100-Python-Projects" target="_blank">
-100 Python Projects Repository
-</a>
-</p>
-
+        </div>
+    </div>
 </header>
 
+    <main class="container mx-auto px-6 py-12 relative z-10">
+        
 
-<section class="readme">
+        <!-- Add this right after the search bar div -->
+<div class="mb-12 reveal">
+    <input type="text" id="search" placeholder="🔍 Search projects by name, description, or category..."
+        class="w-full text-white font-medium">
+</div>
 
-<h2>A Structured Journey: From Fundamentals → Systems → Capstones</h2>
-
-<p>
-This repository documents a mission to build
-<strong>100 practical Python projects using FastAPI or CLI</strong>.
-</p>
-
-<p>
-The projects are structured into three layers:
-</p>
-
-<ul>
-<li><strong>60 Small / Medium Projects</strong> — core programming skills</li>
-<li><strong>13 Mega Projects</strong> — category level systems</li>
-<li><strong>3 Capstone Projects</strong> — multi-domain applications</li>
-</ul>
-
+<!-- NEW: Advanced Filter Section -->
+<section id="filters" class="mb-12 reveal glass-card p-6 rounded-2xl">
+    <div class="flex items-center justify-between mb-6">
+        <h3 class="text-2xl font-black gradient-text">🎯 Filters & Organization</h3>
+        <button id="clear-filters" class="px-4 py-2 glass-card rounded-xl text-sm font-semibold hover:scale-105 transition">
+            🔄 Clear All
+        </button>
+    </div>
+    
+    <!-- Status Filter -->
+    <div class="mb-6">
+        <label class="block text-sm font-semibold text-gray-400 mb-3 uppercase tracking-wide">Status</label>
+        <div class="flex flex-wrap gap-3" id="status-filters">
+            <button class="filter-btn active" data-status="all">
+                <span class="mr-2">📊</span> All Projects
+            </button>
+            <button class="filter-btn" data-status="completed">
+                <span class="mr-2">✅</span> Completed
+            </button>
+            <button class="filter-btn" data-status="in-progress">
+                <span class="mr-2">⏳</span> In Progress
+            </button>
+            <button class="filter-btn" data-status="not-started">
+                <span class="mr-2">⭕</span> Not Started
+            </button>
+        </div>
+    </div>
+    
+    <!-- Category Filter -->
+    <div class="mb-6">
+        <label class="block text-sm font-semibold text-gray-400 mb-3 uppercase tracking-wide">Category</label>
+        <div class="flex flex-wrap gap-3" id="category-filters">
+            <!-- Will be populated by JS -->
+        </div>
+    </div>
+    
+    <!-- Type Filter -->
+    <div class="mb-6">
+        <label class="block text-sm font-semibold text-gray-400 mb-3 uppercase tracking-wide">Project Type</label>
+        <div class="flex flex-wrap gap-3" id="type-filters">
+            <button class="filter-btn active" data-type="all">
+                <span class="mr-2">🎯</span> All Types
+            </button>
+            <button class="filter-btn" data-type="normal">
+                <span class="mr-2">📝</span> Normal
+            </button>
+            <button class="filter-btn" data-type="mega">
+                <span class="mr-2">🚀</span> Mega
+            </button>
+            <button class="filter-btn" data-type="capstone">
+                <span class="mr-2">👑</span> Capstone
+            </button>
+        </div>
+    </div>
+    
+    <!-- Sort Options -->
+    <div>
+        <label class="block text-sm font-semibold text-gray-400 mb-3 uppercase tracking-wide">Sort By</label>
+        <div class="flex flex-wrap gap-3" id="sort-options">
+            <button class="filter-btn active" data-sort="default">
+                <span class="mr-2">🔢</span> Default Order
+            </button>
+            <button class="filter-btn" data-sort="name">
+                <span class="mr-2">🔤</span> Name (A-Z)
+            </button>
+            <button class="filter-btn" data-sort="progress">
+                <span class="mr-2">📈</span> Progress
+            </button>
+            <button class="filter-btn" data-sort="time">
+                <span class="mr-2">⏱️</span> Time Spent
+            </button>
+            <button class="filter-btn" data-sort="rating">
+                <span class="mr-2">⭐</span> Rating
+            </button>
+        </div>
+    </div>
+    
+    <!-- Active Filters Display -->
+    <div id="active-filters" class="mt-6 pt-6 border-t border-white/10 hidden">
+        <div class="flex items-center gap-2 mb-3">
+            <span class="text-sm font-semibold text-gray-400">Active Filters:</span>
+        </div>
+        <div id="active-filters-list" class="flex flex-wrap gap-2"></div>
+    </div>
 </section>
 
-
-<section class="dashboard">
-
-<h2>📊 Progress Dashboard</h2>
-
-<div class="stats">
-
-<div class="stat">
-<h3>Total</h3>
-<p id="totalProjects">100</p>
+<!-- Results Count -->
+<div id="results-info" class="mb-6 reveal glass-card p-4 rounded-xl">
+    <div class="flex items-center justify-between flex-wrap gap-4">
+        <span class="text-lg font-semibold">
+            Showing <span id="results-count" class="gradient-text font-black">0</span> projects
+        </span>
+        <div class="flex gap-3">
+            <button id="collapse-all" class="px-4 py-2 glass-card rounded-lg text-sm font-semibold hover:scale-105 transition">
+                ➖ Collapse All
+            </button>
+            <button id="expand-all" class="px-4 py-2 glass-card rounded-lg text-sm font-semibold hover:scale-105 transition">
+                ➕ Expand All
+            </button>
+        </div>
+    </div>
 </div>
 
-<div class="stat">
-<h3>Completed</h3>
-<p id="completedProjects">0</p>
+        <!-- Dashboard -->
+        <section id="dashboard" class="mb-16 reveal">
+            <h2 class="text-3xl font-black mb-8 gradient-text">📊 Progress Dashboard</h2>
+            
+            <!-- Stats Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-12">
+                <div class="glass-card p-6 rounded-2xl text-center stat-card" style="animation-delay: 0.1s">
+                    <div class="text-blue-400 text-5xl mb-2">📚</div>
+                    <h3 class="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-2">Total Projects</h3>
+                    <p id="totalProjects" class="text-5xl font-black gradient-text">100</p>
+                </div>
+                <div class="glass-card p-6 rounded-2xl text-center stat-card" style="animation-delay: 0.2s">
+                    <div class="text-green-400 text-5xl mb-2">✅</div>
+                    <h3 class="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-2">Completed</h3>
+                    <p id="completedProjects" class="text-5xl font-black text-green-400">0</p>
+                </div>
+                <div class="glass-card p-6 rounded-2xl text-center stat-card" style="animation-delay: 0.3s">
+                    <div class="text-orange-400 text-5xl mb-2">⏳</div>
+                    <h3 class="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-2">Remaining</h3>
+                    <p id="remainingProjects" class="text-5xl font-black text-orange-400">100</p>
+                </div>
+                <div class="glass-card p-6 rounded-2xl text-center stat-card" style="animation-delay: 0.4s">
+                    <div class="text-purple-400 text-5xl mb-2">📈</div>
+                    <h3 class="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-2">Completion</h3>
+                    <p id="completionPercent" class="text-5xl font-black text-purple-400">0%</p>
+                </div>
+                <div class="glass-card p-6 rounded-2xl text-center stat-card" style="animation-delay: 0.5s">
+                    <div class="text-pink-400 text-5xl mb-2">⏱️</div>
+                    <h3 class="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-2">Total Time</h3>
+                    <p id="totalTime" class="text-5xl font-black text-pink-400">0h 0m</p>
+                </div>
+            </div>
+
+            <!-- Charts Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <div class="glass-card p-6 rounded-2xl reveal" style="animation-delay: 0.6s">
+        <h3 class="text-xl font-bold mb-4 text-center">Progress Overview</h3>
+        <div class="h-64 flex items-center justify-center">
+            <canvas id="progressChart"></canvas>
+        </div>
+    </div>
+    <div class="glass-card p-6 rounded-2xl reveal" style="animation-delay: 0.7s">
+        <h3 class="text-xl font-bold mb-4 text-center">Category Distribution</h3>
+        <div class="h-64 flex items-center justify-center">
+            <canvas id="categoryChart"></canvas>
+        </div>
+    </div>
+    <div class="glass-card p-6 rounded-2xl reveal" style="animation-delay: 0.8s">
+        <h3 class="text-xl font-bold mb-4 text-center">Time Investment</h3>
+        <div class="h-64 flex items-center justify-center">
+            <canvas id="timeChart"></canvas>
+        </div>
+    </div>
 </div>
+        </section>
 
-<div class="stat">
-<h3>Remaining</h3>
-<p id="remainingProjects">100</p>
-</div>
+        <!-- Projects Section -->
+        <section id="projects" class="projectsContainer mb-16 space-y-8">
+            <!-- Sections will be injected here by JS -->
+        </section>
 
-<div class="stat">
-<h3>Completion</h3>
-<p id="completionPercent">0%</p>
-</div>
+        <!-- Notes Summary -->
+        <section id="notes-summary" class="glass-card p-8 rounded-2xl shadow-2xl reveal">
+            <h2 class="text-3xl font-black mb-6 gradient-text">📝 Notes Summary</h2>
+            <div id="notes-summary-content" class="text-gray-300 leading-relaxed"></div>
+        </section>
+    </main>
 
-</div>
-
-<div class="charts">
-
-<canvas id="progressChart"></canvas>
-<canvas id="categoryChart"></canvas>
-
-</div>
-
-</section>
-
-
-<section class="controls">
-
-<input
-type="text"
-id="search"
-placeholder="Search projects..."
->
-
-<select id="categoryFilter">
-
-<option value="all">All Categories</option>
-<option value="numbers">Numbers</option>
-<option value="algorithms">Algorithms</option>
-<option value="graph">Graph Theory</option>
-<option value="data">Data Structures</option>
-<option value="text">Text Processing</option>
-<option value="network">Networking</option>
-<option value="oop">OOP Systems</option>
-<option value="concurrency">Concurrency</option>
-<option value="web">Web Applications</option>
-<option value="files">File Systems</option>
-<option value="database">Databases</option>
-<option value="media">Graphics</option>
-<option value="security">Security</option>
-<option value="capstone">Capstone</option>
-
-</select>
-
-</section>
-
-
-<main id="projectsContainer">
-
-<!-- JS will inject all 100 projects here -->
-
-</main>
-
-
-
-<template id="projectCardTemplate">
-
-<div class="projectCard">
-
-<div class="projectHeader">
-
-<h3 class="projectTitle"></h3>
-
-<span class="status"></span>
-
-</div>
-
-<p class="projectDescription"></p>
-
-<div class="repoSection">
-
-<input
-class="githubInput"
-placeholder="GitHub repo URL (required)"
->
-
-<input
-class="liveInput"
-placeholder="Live preview URL (optional)"
->
-
-<button class="saveBtn">+</button>
-
-</div>
-
-
-<div class="stars">
-
-<span data-star="1">⭐</span>
-<span data-star="2">⭐</span>
-<span data-star="3">⭐</span>
-<span data-star="4">⭐</span>
-<span data-star="5">⭐</span>
-
-</div>
-
-
-<textarea
-class="notes"
-placeholder="What should you remember from this project?"
-></textarea>
-
-</div>
-
+    <!-- Project Card Template -->
+    <template id="projectCardTemplate">
+    <div class="project-card-wrapper reveal">
+        <div class="project-card-number flex justify-center text-2xl font-bold border rounded-full p-3 mb-3 m-3"></div>
+        <div class="project-card">
+            <div class="project-card-inner space-y-4">
+                <div class="flex items-start justify-between mb-4">
+                    <h3 class="project-title text-xl font-bold flex-1"></h3>
+                    <span class="status ml-4"></span>
+                </div>
+                <p class="project-description text-gray-400 leading-relaxed"></p>
+                
+                <div class="repo-section space-y-3">
+                    <input class="github-input" type="url" placeholder="🔗 GitHub repo URL (required)">
+                    <input class="live-input" type="url" placeholder="🌐 Live preview URL (optional)">
+                    <button class="save-btn">
+                        💾 Save Project
+                    </button>
+                </div>
+                
+                <div class="stars flex justify-center gap-2 py-2">
+                    <span data-star="1">⭐</span>
+                    <span data-star="2">⭐</span>
+                    <span data-star="3">⭐</span>
+                    <span data-star="4">⭐</span>
+                    <span data-star="5">⭐</span>
+                </div>
+                
+                <div class="time-section glass-card p-4 rounded-xl flex items-center justify-between">
+                    <button class="start-timer">start timer</button>
+                    <span class="time-display"></span>
+                </div>
+                
+                <textarea class="notes" rows="4" placeholder="📌 What did you learn from this project?"></textarea>
+            </div>
+        </div>
+    </div>
 </template>
 
+    <!-- Footer -->
+    <footer class="glass-card mt-16 py-8 border-t border-white/10">
+        <div class="container mx-auto px-6 text-center">
+            <p class="text-gray-400 text-sm">
+                🎯 Project Tracker for the
+                <a href="https://github.com/nishchup489-afk/100-Python-Projects" target="_blank"
+                    class="text-blue-400 hover:text-blue-300 transition underline decoration-wavy">
+                    100 Python Projects Repository
+                </a>
+            </p>
+            <p class="text-gray-500 text-xs mt-2">Made with 💙 by Nishchup</p>
+        </div>
+    </footer>
 
+    <script src="js/projects.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/charts.js"></script>
+    <script src="js/script.js"></script>
 
-<footer>
+    <script>
+        // Add reveal animation on scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('reveal');
+                }
+            });
+        });
 
-<p>
-Project Tracker for the
-<a href="https://github.com/nishchup489-afk/100-Python-Projects" target="_blank">
-100 Python Projects
-</a>
-</p>
-
-</footer>
-
-
-<script src="js/projects.js"></script>
-<script src="js/storage.js"></script>
-<script src="js/ui.js"></script>
-<script src="js/charts.js"></script>
-<script src="js/script.js"></script>
+        document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+    </script>
 
 </body>
 

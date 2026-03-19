@@ -4,188 +4,96 @@ CARD CREATION
 
 function createProjectCard(project, savedData = {}) {
 
-const template = document
-.getElementById("projectCardTemplate")
-.content.cloneNode(true)
+    const template = document.getElementById("projectCardTemplate").content.cloneNode(true);
 
-const card = template.querySelector(".projectCard")
+    const wrapper = template.querySelector(".project-card-wrapper");
+    const number = template.querySelector(".project-card-number");
+    const card = template.querySelector(".project-card");
+    const title = template.querySelector(".project-title");
+    const description = template.querySelector(".project-description");
+    const githubInput = template.querySelector(".github-input");
+    const liveInput = template.querySelector(".live-input");
+    const starsContainer = template.querySelector(".stars");
+    const notes = template.querySelector(".notes");
+    const status = template.querySelector(".status");
+    const saveBtn = template.querySelector('.save-btn');
 
-const title = template.querySelector(".projectTitle")
-const description = template.querySelector(".projectDescription")
+    number.textContent = project.id;
+    title.textContent = project.name;
+    description.textContent = project.description;
+    wrapper.dataset.id = project.id;
+    starsContainer.dataset.projectId = project.id;
 
-const githubInput = template.querySelector(".githubInput")
-const liveInput = template.querySelector(".liveInput")
-
-const stars = template.querySelectorAll(".stars span")
-const notes = template.querySelector(".notes")
-const status = template.querySelector(".status")
-
-title.textContent = project.name
-description.textContent = project.description
-
-card.dataset.id = project.id
-
-
-/* =========================================
-LOAD SAVED DATA
-========================================= */
-
-if(savedData.github){
-
-githubInput.value = savedData.github
-status.textContent = "✔"
-status.classList.add("completed")
-
-}
-
-if(savedData.live){
-
-liveInput.value = savedData.live
-
-}
-
-if(savedData.notes){
-
-notes.value = savedData.notes
-
-}
-
-if(savedData.stars){
-
-stars.forEach(star => {
-
-if(Number(star.dataset.star) <= savedData.stars){
-
-star.classList.add("active")
-
-}
-
-})
-
-}
+    if (project.type === 'mega') {
+        card.classList.add('glorified');
+    } else if (project.type === 'capstone') {
+        card.classList.add('glorified', 'marvellous', 'extraordinary');
+    }
 
 
-/* =========================================
-STAR RATING ANIMATION
-========================================= */
+    /* =========================================
+    LOAD SAVED DATA
+    ========================================= */
 
-stars.forEach(star => {
+    if (savedData.github) {
+        githubInput.value = savedData.github;
+        status.textContent = "✔";
+        status.classList.add("text-green-500");
+    }
 
-star.addEventListener("mouseenter", () => {
+    if (savedData.live) {
+        liveInput.value = savedData.live;
+    }
 
-animateStars(stars, star.dataset.star)
+    if (savedData.notes) {
+        notes.value = savedData.notes;
+    }
 
-})
-
-star.addEventListener("mouseleave", () => {
-
-resetStars(stars, savedData.stars)
-
-})
-
-})
-
-
-
-/* =========================================
-CARD ENTRANCE ANIMATION
-========================================= */
-
-requestAnimationFrame(() => {
-
-card.classList.add("card-enter")
-
-})
+    if (savedData.stars) {
+        updateStars(starsContainer, savedData.stars);
+    }
 
 
-return card
+    /* =========================================
+    STAR RATING INTERACTION
+    ========================================= */
 
+    const stars = starsContainer.querySelectorAll('span');
+    stars.forEach(star => {
+        star.addEventListener('click', () => {
+            const rating = star.dataset.star;
+            const projectId = starsContainer.dataset.projectId;
+            let tracker = loadTracker();
+            if (!tracker[projectId]) {
+                tracker[projectId] = {};
+            }
+            tracker[projectId].stars = rating;
+            saveTracker(tracker);
+            updateStars(starsContainer, rating);
+        });
+    });
+
+
+    return wrapper;
 }
 
 
 
 /* =========================================
-STAR ANIMATION
+STAR VISUALS
 ========================================= */
 
-function animateStars(stars, rating){
-
-stars.forEach(star => {
-
-star.classList.remove("active")
-
-if(Number(star.dataset.star) <= rating){
-
-star.classList.add("active")
-
-}
-
-})
-
-}
-
-
-
-function resetStars(stars, rating){
-
-stars.forEach(star => {
-
-star.classList.remove("active")
-
-if(Number(star.dataset.star) <= rating){
-
-star.classList.add("active")
-
-}
-
-})
-
-}
-
-
-
-/* =========================================
-COMPLETION ANIMATION
-========================================= */
-
-function animateCompletion(card){
-
-card.classList.add("completed-flash")
-
-setTimeout(() => {
-
-card.classList.remove("completed-flash")
-
-}, 800)
-
-}
-
-
-
-/* =========================================
-CARD HOVER EFFECT
-========================================= */
-
-function enableHoverEffects(){
-
-const cards = document.querySelectorAll(".projectCard")
-
-cards.forEach(card => {
-
-card.addEventListener("mouseenter", () => {
-
-card.style.transform = "translateY(-6px) scale(1.02)"
-
-})
-
-card.addEventListener("mouseleave", () => {
-
-card.style.transform = "translateY(0) scale(1)"
-
-})
-
-})
-
+function updateStars(starsContainer, rating) {
+    const stars = starsContainer.querySelectorAll('span');
+    stars.forEach(star => {
+        if (parseInt(star.dataset.star) <= rating) {
+            star.classList.add('text-yellow-400');
+            star.classList.remove('text-gray-600');
+        } else {
+            star.classList.remove('text-yellow-400');
+            star.classList.add('text-gray-600');
+        }
+    });
 }
 
 
@@ -194,15 +102,11 @@ card.style.transform = "translateY(0) scale(1)"
 SMOOTH SCROLL HELPERS
 ========================================= */
 
-function scrollToTop(){
-
-window.scrollTo({
-
-top:0,
-behavior:"smooth"
-
-})
-
+function scrollToTop() {
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
 }
 
 
@@ -211,28 +115,18 @@ behavior:"smooth"
 TOAST NOTIFICATION
 ========================================= */
 
-function showToast(message){
+function showToast(message) {
+    const toast = document.createElement("div");
+    toast.className = "fixed bottom-5 right-5 bg-gray-800 text-white py-2 px-4 rounded-lg shadow-lg";
+    toast.textContent = message;
+    document.body.appendChild(toast);
 
-const toast = document.createElement("div")
+    setTimeout(() => {
+        toast.style.opacity = '1';
+    }, 50);
 
-toast.className = "toast"
-
-toast.textContent = message
-
-document.body.appendChild(toast)
-
-setTimeout(() => {
-
-toast.classList.add("visible")
-
-}, 50)
-
-setTimeout(() => {
-
-toast.classList.remove("visible")
-
-setTimeout(() => toast.remove(), 300)
-
-}, 2500)
-
+    setTimeout(() => {
+        toast.style.opacity = '0';
+        setTimeout(() => toast.remove(), 300);
+    }, 2500);
 }

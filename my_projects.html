@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎨 My Projects</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    animation: {
+                        'gradient': 'gradient 8s linear infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        gradient: {
+                            '0%, 100%': { backgroundPosition: '0% 50%' },
+                            '50%': { backgroundPosition: '100% 50%' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        }
+                    }
+                },
+            },
+        }
+    </script>
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #16213e 100%);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated background orbs */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -25%;
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: float 8s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            bottom: -50%;
+            right: -25%;
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: float 10s ease-in-out infinite reverse;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Glassmorphism */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            transition: all 0.3s ease;
+        }
+
+        .glass-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(59, 130, 246, 0.3);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px 0 rgba(59, 130, 246, 0.2);
+        }
+
+        /* Gradient text */
+        .gradient-text {
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 50%, #ec4899 100%);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradient 4s ease infinite;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #3b82f6 0%, #8b5cf6 100%);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, #2563eb 0%, #7c3aed 100%);
+        }
+
+        /* Button styles */
+        .btn-gradient {
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-gradient::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-gradient:hover::before {
+            left: 100%;
+        }
+
+        .btn-gradient:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.4);
+        }
+
+        /* Project card hover effect */
+        .project-card {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .project-card:hover::before {
+            opacity: 1;
+        }
+
+        /* Reveal animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: reveal 0.6s ease forwards;
+        }
+
+        @keyframes reveal {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Empty state */
+        .empty-state {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 2px dashed rgba(255, 255, 255, 0.2);
+            border-radius: 24px;
+            padding: 80px 40px;
+            text-align: center;
+        }
+
+        /* Link styles */
+        a.project-link {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        a.project-link:hover {
+            transform: scale(1.05);
+        }
+
+        /* Category badges */
+        .category-badge {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, rgba(139, 92, 246, 0.2) 100%);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            padding: 8px 16px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: inline-block;
+            margin-bottom: 16px;
+        }
+    </style>
+</head>
+
+<body class="font-sans text-white">
+
+    <!-- Header -->
+    <header class="glass-card sticky top-0 z-50 shadow-2xl border-b border-white/10">
+        <div class="container mx-auto px-6 py-6">
+            <div class="flex items-center justify-between">
+                <div class="reveal">
+                    <h1 class="text-4xl font-black gradient-text mb-2">
+                        🎨 My Projects
+                    </h1>
+                    <p class="text-gray-400 text-sm">
+                        A collection of your completed projects
+                    </p>
+                </div>
+                <nav class="flex gap-3">
+                    <a href="index.html"
+                        class="px-6 py-3 glass-card rounded-xl font-semibold hover:scale-105 transition">
+                        🏠 Home
+                    </a>
+                    <a href="demo_projects.html"
+                        class="px-6 py-3 glass-card rounded-xl font-semibold hover:scale-105 transition">
+                        🎯 Demo Projects
+                    </a>
+                    <button id="theme-toggle" 
+                        class="px-6 py-3 btn-gradient rounded-xl font-semibold shadow-lg">
+                        🌓 Theme
+                    </button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main id="projects-container" class="container mx-auto px-6 py-12 relative z-10">
+        <!-- Projects will be injected here by JS -->
+    </main>
+
+    <!-- Project Card Template -->
+    <template id="projectCardTemplate">
+        <div class="glass-card project-card rounded-2xl overflow-hidden reveal">
+            <div class="p-6">
+                <!-- Project Title -->
+                <h3 class="projectTitle text-2xl font-bold text-white mb-3"></h3>
+                
+                <!-- Project Description -->
+                <p class="projectDescription text-gray-400 mb-6 leading-relaxed"></p>
+                
+                <!-- Action Buttons -->
+                <div class="flex flex-wrap gap-3">
+                    <a class="githubLink project-link flex-1 min-w-[140px] px-5 py-3 glass-card rounded-xl font-semibold text-center hover:bg-white/10 transition flex items-center justify-center gap-2" 
+                       href="" target="_blank">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                        </svg>
+                        GitHub
+                    </a>
+                    <a class="liveLink project-link flex-1 min-w-[140px] px-5 py-3 btn-gradient rounded-xl font-semibold text-center shadow-lg flex items-center justify-center gap-2" 
+                       href="" target="_blank">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                        </svg>
+                        Live Preview
+                    </a>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- Footer -->
+    <footer class="glass-card mt-16 py-8 border-t border-white/10 relative z-10">
+        <div class="container mx-auto px-6 text-center">
+            <p class="text-gray-400 text-sm">
+                🎯 Keep building amazing projects!
+            </p>
+            <p class="text-gray-500 text-xs mt-2">Made with 💙 by Nishchup</p>
+        </div>
+    </footer>
+
+    <script src="js/projects.js"></script>
+    <script src="js/storage.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const container = document.getElementById("projects-container");
+            const template = document.getElementById("projectCardTemplate");
+            const tracker = loadTracker();
+
+            const completedProjects = projects.filter(p => tracker[p.id] && tracker[p.id].github);
+
+            // Empty state
+            if (completedProjects.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state reveal">
+                        <div class="text-8xl mb-6 animate-float">📦</div>
+                        <h2 class="text-3xl font-bold gradient-text mb-4">No Projects Yet</h2>
+                        <p class="text-gray-400 text-lg mb-8 max-w-md mx-auto">
+                            You haven't completed any projects yet. Start building to see your work here!
+                        </p>
+                        <a href="index.html" 
+                           class="inline-block px-8 py-4 btn-gradient rounded-xl font-bold text-lg shadow-2xl">
+                            🚀 Start Building
+                        </a>
+                    </div>
+                `;
+                return;
+            }
+
+            // Group projects by category
+            const categories = {};
+
+            completedProjects.forEach(project => {
+                if (!categories[project.category]) {
+                    categories[project.category] = {
+                        normal: [],
+                        mega: [],
+                        capstone: []
+                    };
+                }
+                categories[project.category][project.type].push(project);
+            });
+
+            // Render categories
+            let delay = 0;
+            for (const category in categories) {
+                const categorySection = document.createElement('section');
+                categorySection.id = category;
+                categorySection.classList.add('mb-12');
+                
+                categorySection.innerHTML = `
+                    <div class="flex items-center gap-4 mb-6 reveal" style="animation-delay: ${delay * 0.1}s">
+                        <h2 class="text-3xl font-black gradient-text">${category.toUpperCase()}</h2>
+                        <div class="flex-1 h-px bg-gradient-to-r from-blue-500/50 to-transparent"></div>
+                    </div>
+                `;
+
+                const projectsContainer = document.createElement('div');
+                projectsContainer.className = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6';
+
+                const appendProjects = (projectList) => {
+                    projectList.forEach((project, index) => {
+                        const card = createProjectCard(project, delay + index);
+                        if (card) {
+                            projectsContainer.appendChild(card);
+                        }
+                    });
+                }
+
+                appendProjects(categories[category].normal);
+                appendProjects(categories[category].mega);
+                appendProjects(categories[category].capstone);
+
+                categorySection.appendChild(projectsContainer);
+                container.appendChild(categorySection);
+                delay += Object.keys(categories[category]).length;
+            }
+
+            function createProjectCard(project, index) {
+                const saved = tracker[project.id];
+                if (!saved || !saved.github) return null;
+
+                const clone = template.content.cloneNode(true);
+                const card = clone.querySelector('.project-card');
+                const title = clone.querySelector(".projectTitle");
+                const desc = clone.querySelector(".projectDescription");
+                const githubLink = clone.querySelector(".githubLink");
+                const liveLink = clone.querySelector(".liveLink");
+
+                // Add staggered animation delay
+                card.style.animationDelay = `${index * 0.1}s`;
+
+                title.textContent = project.name;
+                desc.textContent = project.description;
+                githubLink.href = saved.github;
+                
+                if (saved.live) {
+                    liveLink.href = saved.live;
+                } else {
+                    liveLink.remove();
+                }
+
+                return clone;
+            }
+
+            // Theme toggle
+            const themeToggle = document.getElementById('theme-toggle');
+            themeToggle.addEventListener('click', () => {
+                document.body.classList.toggle('light');
+                if (document.body.classList.contains('light')) {
+                    localStorage.setItem('theme', 'light');
+                    document.body.style.background = 'linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 50%, #d1d5db 100%)';
+                } else {
+                    localStorage.setItem('theme', 'dark');
+                    document.body.style.background = 'linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #16213e 100%)';
+                }
+            });
+
+            // Load theme from local storage
+            if (localStorage.getItem('theme') === 'light') {
+                document.body.classList.add('light');
+                document.body.style.background = 'linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 50%, #d1d5db 100%)';
+            }
+
+            // Add reveal animation on scroll
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('reveal');
+                    }
+                });
+            });
+
+            document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+        });
+    </script>
+
+</body>
+
+</html>

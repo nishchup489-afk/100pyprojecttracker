@@ -169,3 +169,21 @@ function getCompletedCount(){
         .length
 
 }
+
+function getProjectData(projectId){
+    const tracker = loadTracker();
+    return tracker[projectId] || {};
+}
+
+function loadDisciplineData() {
+    const data = localStorage.getItem('disciplineData');
+    const defaultData = {
+        weeklyGoal: 5,
+        dailyProgress: {}
+    };
+    return data ? JSON.parse(data) : defaultData;
+}
+
+function saveDisciplineData(data) {
+    localStorage.setItem('disciplineData', JSON.stringify(data));
+}
